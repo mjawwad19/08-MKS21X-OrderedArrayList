@@ -13,12 +13,12 @@ public class NoNullArrayList<T> extends ArrayList<T> {
     return element;
   }
   public boolean add(T t) {
-    if (t == null) throw IllegalArgumentException("You cannot add a null!");
+    if (t == null) throw new IllegalArgumentException("You cannot add a null!");
     super.add(t);
     return true;
   }
   public void add(int index, T element) {
-    if (element == null) throw IllegalArgumentException("You cannot add a null!");
+    if (element == null) throw new IllegalArgumentException("You cannot add a null!");
     super.add(index, element);
   }
 }
