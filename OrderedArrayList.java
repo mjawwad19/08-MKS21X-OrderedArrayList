@@ -23,5 +23,11 @@ public class OrderedArrayList<T extends Comparable<T>> extends NoNullArrayList<T
 
   /*SanityCheck for helper fxn to sort the array list
   and figure what index to add to.*/
-  private int Sorted(T element) {}
+  private int Sorted(T element) {
+    int i = 0;
+    while (i < size() && element.compareTo(get(i)) > 0) {
+      i++;
+    }
+    return i;
+  }
 }
