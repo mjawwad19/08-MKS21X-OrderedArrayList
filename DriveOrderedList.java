@@ -1,91 +1,82 @@
 public class DriveOrderedList {
 	public static void main(String[] args) {
-
-		int c = 0;
-
 		NoNullArrayList<String> array = new NoNullArrayList<>();
-
-		try {
-			array.add("x");
-			if (!(""+array).equals("[x]")) System.out.println(++c+". You aren't adding properly when NoNullArrayList.add(T) is called.");
-			array.add(0,"y");
-			if (!(""+array).equals("[y, x]")) System.out.println(++c+". You aren't adding properly when NoNullArrayList.add(index, T) is called.");
-			array.set(1,"z");
-			if (!(""+array).equals("[y, z]")) System.out.println(++c+". You aren't setting properly when NoNullArrayList.set(index, T) is called.");
-		} catch (Exception e) {
-			System.out.println(++c+". You are producing a "+e.getClass().getCanonicalName()+" when adding/setting to a NoNullArrayList.");
+    int errorCount = 0;
+			array.add("hey");
+      System.out.println(array); //[hey]
+			array.add(0,"erm?");
+			System.out.println(array);// [erm?, hey]
+			array.set(1,"hi");
+			System.out.println(array); // [erm?, hi]
+    try { array.set(1,null); //should throw an error
+    } catch (IllegalArgumentException e) {
+      errorCount++;
+      System.out.println("You cannot set a null, this should cause error count to go up");
+      System.out.println(errorCount); //1
 		}
 
+	  try {
+      array.add(null);
+    } catch (IllegalArgumentException e) {
+      errorCount++;
+      System.out.println("You cannot add a null, this should cause error count to go up");
+      System.out.println(errorCount); //2
+    }
 		try {
-			try {
-				array.add(null);
-				System.out.println(++c+". You aren't catching nulls properly when NoNullArrayList.add(T) is called.");
-			} catch (IllegalArgumentException e) {}
-			if (!(""+array).equals("[y, z]")) System.out.println(++c+". You are modifying the array when NoNullArrayList.add(null) is called.");
-			try {
 				array.add(0,null);
-				System.out.println(++c+". You aren't catching nulls when NoNullArrayList.add(index, T) is called.");
-			} catch (IllegalArgumentException e) {}
-			if (!(""+array).equals("[y, z]")) System.out.println(++c+". You are modifying the array when NoNullArrayList.add(index, null) is called.");
-			try {
-				array.set(1,null);
-				System.out.println(++c+". You aren't catching nulls when NoNullArrayList.set(index, T) is called.");
-			} catch (IllegalArgumentException e) {}
-			if (!(""+array).equals("[y, z]")) System.out.println(++c+". You are modifying the array when NoNullArrayList.set(index, null) is called.");
-		} catch (Exception e) {
-			System.out.println(++c+". You are producing a "+e.getClass().getCanonicalName()+" when adding/setting a null value to a NoNullArrayList. You should be throwing IllegalArgumentException instead.");
-		}
+    } catch (IllegalArgumentException e) {
+      errorCount++;
+      System.out.println("You cannot add a null, this should cause error count to go up") ;
+      System.out.println(errorCount); //3
+    }
 
-		array = new OrderedArrayList<>();
+		OrderedArrayList<String> oArray = new OrderedArrayList<>();
+			oArray.add("a");
+			oArray.add("c");
+			oArray.add("b");
+			System.out.println(oArray); // [a, b, c] if you ordered correctly
+			oArray.add(2,"d");
+			oArray.add(1,"e");
+			oArray.add(0,"f");
+			System.out.println(oArray); // [a, b, c, d, e, f]
+      if (! (""+oArray).equals("[a, b, c, d, e, f]")) {
+        errorCount++;
+        System.out.println("Your Ordered class add is wack!");
+      } //shouldn't yield an error if u did right tho
 
-		try {
-			array.add("z");
-			array.add("x");
-			array.add("y");
-			if (!(""+array).equals("[x, y, z]")) System.out.println(++c+". You aren't adding properly when OrderedArrayList.add(T) is called.");
-			array.add(2,"c");
-			array.add(1,"a");
-			array.add(0,"b");
-			if (!(""+array).equals("[a, b, c, x, y, z]")) {
-				System.out.print(++c+". You aren't adding properly when OrderedArrayList.add(index, T) is called. ");
-				if (array.size() == 6) System.out.println("Your elements are out of order. :(");
-				else System.out.println("Some elements aren't getting added. They feel left out :(");
-			}
-			array.set(2,"r");
-			array.set(1,"p");
-			array.set(0,"q");
-			if (!(""+array).equals("[p, q, r, x, y, z]")) {
-				System.out.print(++c+". You aren't adding properly when OrderedArrayList.set(index, T) is called. ");
-				if (array.size() > 6) System.out.println("You aren't removing elements properly!");
-				else if (array.size() < 6) System.out.println("Some elements aren't getting added. They feel left out :(");
-				else if ((""+array).contains("a") || (""+array).contains("b") || (""+array).contains("c")) System.out.println("You aren't removing elements properly!");
-				else System.out.println("Your elements are out of order. :(");
-			}
-		} catch (Exception e) {
-			System.out.println(++c+". You are producing a "+e.getClass().getCanonicalName()+" when adding/setting to an OrderedArrayList.");
-		}
+    try {
+      oArray.add(null);
+    } catch (IllegalArgumentException e) {
+      errorCount++;
+      System.out.println("You cannot add a null, this should cause error count to go up ");
+      System.out.println(errorCount); //4
+    }
+    try {
+      oArray.set(2, null);
+    } catch (IllegalArgumentException e) {
+      errorCount++;
+      System.out.println("You cannot add a null, this should cause error count to go up");
+      System.out.println(errorCount); //5
+    }
 
-		try {
-			try {
-				array.add(null);
-				System.out.println(++c+". You aren't catching nulls properly when OrderedArrayList.add(T) is called.");
-			} catch (IllegalArgumentException e) {}
-			if (!(""+array).equals("[p, q, r, x, y, z]")) System.out.println(++c+". You are modifying the array when OrderedArrayList.add(null) is called.");
-			try {
-				array.add(0,null);
-				System.out.println(++c+". You aren't catching nulls when OrderedArrayList.add(index, T) is called.");
-			} catch (IllegalArgumentException e) {}
-			if (!(""+array).equals("[p, q, r, x, y, z]")) System.out.println(++c+". You are modifying the array when OrderedArrayList.add(index, null) is called.");
-			try {
-				array.set(1,null);
-				System.out.println(++c+". You aren't catching nulls when OrderedArrayList.set(index, T) is called.");
-			} catch (IllegalArgumentException e) {}
-			if (!(""+array).equals("[p, q, r, x, y, z]")) System.out.println(++c+". You are modifying the array when OrderedArrayList.set(index, null) is called.");
-		} catch (Exception e) {
-			System.out.println(++c+". You are producing a "+e.getClass().getCanonicalName()+" when adding/setting a null value to an OrderedArrayList. You should be throwing IllegalArgumentException instead.");
-		}
-
-		if (c == 0) System.out.println("Your code passed every test. Nice work.");
-		else System.out.println("\nYou produced "+c+" unexpected results. Keep debugging!");
-	}
+    oArray.set(0, "h");
+    System.out.println(oArray); //[b, c, d, e, f, h]
+    oArray.set(1, "b");
+    System.out.println(oArray); //[b, b, d, e, f, h]
+    oArray.set(2, "j");
+    System.out.println(oArray); //[b, b, e, f, h, j]
+    oArray.set(3, "r");
+    System.out.println(oArray); //[b, b, e, h, j, r]
+    oArray.set(4, "n");
+    System.out.println(oArray); //[b,b, e, h, n, r]
+    oArray.set(5, "t");
+    System.out.println(oArray); // [b, b, e, h, n, t]
+    if (! (""+oArray).equals("[b, b, e, h, n, t]")) {
+      errorCount++;
+      System.out.println("You really need to check your sorting and adding methods");
+      System.out.println(errorCount);
+    } //this should just end addd [b, b, e, h, n, t] if u did right
+   if (errorCount == 5) System.out.println("You have everything right!");
+   else {System.out.println("You screwed up");}
+ }
 }
