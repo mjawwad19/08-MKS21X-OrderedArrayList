@@ -7,10 +7,11 @@ public class OrderedArrayList<T extends Comparable<T>> extends NoNullArrayList<T
   }
 
   public T set(int index, T element) {
+    T previous = this.get(index);
     if (element != null) remove(index);
     //I didn't modify remove in NoNullArrayList sadly
     add(element);
-    return element;
+    return previous;
   }
 
   public boolean add(T element) {
